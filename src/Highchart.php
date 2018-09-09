@@ -44,7 +44,7 @@ class Highchart {
 
     public function script(): string {
         $script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
-        $script .= "<script>var highchart_" . $this->id . " = Highchart.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
+        $script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
         return $script;
     }
 
