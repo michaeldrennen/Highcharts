@@ -43,7 +43,9 @@ class Highchart {
 
 
     public function script(): string {
-        $script = "var highchart_" . $this->id . " = Highchart.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");";
+        $script = "var Highcharts = require('highcharts');";
+        $script .= "require('highcharts/modules/exporting')(Highcharts);";
+        $script .= "var highchart_" . $this->id . " = Highchart.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");";
         return $script;
     }
 
