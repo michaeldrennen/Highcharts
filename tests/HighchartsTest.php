@@ -57,5 +57,7 @@ class HighchartsTest extends TestCase {
 
         $chart = Highchart::make()
                           ->options( $options );
+
+        echo $chart->script();
     }
 }

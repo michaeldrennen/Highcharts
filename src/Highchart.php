@@ -6,12 +6,17 @@ use phpDocumentor\Reflection\Types\Self_;
 
 class Highchart {
 
+    protected $id = '';
+
     protected $options = [];
     //protected $title    = '';
     //protected $subTitle = '';
 
-    protected function __construct() {
+    protected $height = 400;
+    protected $width  = '100%';
 
+    protected function __construct() {
+        $this->setIdOfChart();
     }
 
     /**
@@ -21,7 +26,7 @@ class Highchart {
         return new Highchart();
     }
 
-    public function options(array $options){
+    public function options( array $options ) {
         $this->options = $options;
         return $this;
     }
@@ -38,34 +43,16 @@ class Highchart {
 
 
     public function script(): string {
-        $script = "var myChart = Highchart.chart('container', {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'Fruit Consumption'
-        },
-        xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
-        },
-        yAxis: {
-            title: {
-                text: 'Fruit eaten'
-            }
-        },
-        series: [{
-            name: 'Jane',
-            data: [1, 0, 4]
-        }, {
-            name: 'John',
-            data: [5, 7, 3]
-        }]
-    });";
+        $script = "var highchart_" . $this->id . " = Highchart.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");";
         return $script;
     }
 
+    protected function setIdOfChart() {
+        $this->id = mt_rand();
+    }
+
     public function chart(): string {
-        $chart = '<div id="container" style="width:100%; height:400px;"></div>';
+        $chart = '<div id="highchart_container_' . $this->id . '" style="width:' . $this->width . '; height:' . $this->width . 'px;"></div>';
 
         return $chart;
     }
