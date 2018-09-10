@@ -43,7 +43,11 @@ class Highchart {
 
 
     public function script(): string {
-        $script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
+        //$script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
+        $script = '';
+        $script .= '<script src="https://code.highcharts.com/stock/highstock.js"></script>';
+        $script .= '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>';
+        $script .= '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>';
         $script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
         return $script;
     }
