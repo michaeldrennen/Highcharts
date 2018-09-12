@@ -15,6 +15,8 @@ class Highchart {
     protected $height = 400;
     protected $width  = '100%';
 
+    public static $scriptLoaded = FALSE;
+
     protected function __construct() {
         $this->setIdOfChart();
     }
@@ -43,13 +45,19 @@ class Highchart {
 
 
     public function script(): string {
-        //$script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
         $script = '';
-        $script .= '<script src="https://code.highcharts.com/stock/highstock.js"></script>';
-        $script .= '<script src="https://code.highcharts.com/stock/highcharts-more.js"</script>';
-        $script .= '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>';
-        $script .= '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>';
-        $script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
+
+        // Only load these files onto the page once.
+        if ( FALSE === self::$scriptLoaded ):
+            //$script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
+            $script             .= '<script src="https://code.highcharts.com/stock/highstock.js"></script>';
+            $script             .= '<script src="https://code.highcharts.com/stock/highcharts-more.js"</script>';
+            $script             .= '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>';
+            $script             .= '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>';
+            self::$scriptLoaded = TRUE;
+        endif;
+
+        $script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChartg('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
         return $script;
     }
 
