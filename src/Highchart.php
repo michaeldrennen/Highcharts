@@ -57,7 +57,8 @@ class Highchart {
             self::$scriptLoaded = TRUE;
         endif;
 
-        $script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options ) . ");</script>";
+        $script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
+                                                                                                                                              JSON_UNESCAPED_SLASHES ) . ");</script>";
         return $script;
     }
 
