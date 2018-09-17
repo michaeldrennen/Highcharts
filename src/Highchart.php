@@ -50,10 +50,10 @@ class Highchart {
         // Only load these files onto the page once.
         if ( FALSE === self::$scriptLoaded ):
             //$script = '<script src="https://code.highcharts.com/highcharts.js"></script>';
-            $script             .= '<script src="https://code.highcharts.com/stock/highstock.js"></script>';
-            $script             .= '<script src="https://code.highcharts.com/stock/highcharts-more.js"</script>';
-            $script             .= '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script>';
-            $script             .= '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>';
+            $script             .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+            $script             .= "\n" . '<script src="https://code.highcharts.com/stock/highcharts-more.js"</script> ';
+            $script             .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script> ';
+            $script             .= "\n" . '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> ';
             self::$scriptLoaded = TRUE;
         endif;
 
