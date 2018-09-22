@@ -5,11 +5,11 @@ A PHP library that helps produce Highcharts graphs.
 ```php
 $options = [
     'title'    => ['text' => "My First Chart"],
-    'subtitle' => ['text' => "My First Chart"],
+    'subtitle' => ['text' => "It needs data"],
     'yAxis'    => [ 
         [
             'title' => [ 
-                           'text' => "Public Filings" 
+                           'text' => "Scores" 
                        ],
             'type'            => 'linear',
             'floor'           => 0,
