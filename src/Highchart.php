@@ -68,17 +68,17 @@ class Highchart {
      */
     protected function setScripts() {
         $this->script = '';
-        switch ( $this->type ):
-            case 'highstock':
-                $this->script .= "\n" . '<script src="http://code.highcharts.com/highcharts.js"></script> ';
-                break;
-            case 'highchart':
-                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
-                break;
-            default:
-                throw new \Exception( "You tried to set the type of this chart to something that isn't supported." );
-        endswitch;
-
+//        switch ( $this->type ):
+//            case 'highstock':
+//                $this->script .= "\n" . '<script src="http://code.highcharts.com/highcharts.js"></script> ';
+//                break;
+//            case 'highchart':
+//                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+//                break;
+//            default:
+//                throw new \Exception( "You tried to set the type of this chart to something that isn't supported." );
+//        endswitch;
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highcharts-more.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> ';
