@@ -46,10 +46,13 @@ class Highchart {
     }
 
     /**
+     * @param string $type
+     * @param int    $height
+     * @param string $width
      * @return \MichaelDrennen\Highcharts\Highchart
      */
-    public static function make() {
-        return new Highchart();
+    public static function make( string $type = 'highstock', $height = 400, $width = '100%' ) {
+        return new Highchart( $type, $height, $width );
     }
 
     /**
@@ -97,7 +100,7 @@ class Highchart {
                                                                                                                                                         JSON_UNESCAPED_SLASHES ) . ");</script>";
         else:
             $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
-                                                                                                                                                        JSON_UNESCAPED_SLASHES ) . ");</script>";
+                                                                                                                                                   JSON_UNESCAPED_SLASHES ) . ");</script>";
         endif;
 
 
