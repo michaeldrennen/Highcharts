@@ -70,7 +70,7 @@ class Highchart {
         $this->script = '';
         switch ( $this->type ):
             case 'highstock':
-                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highchart.js"></script> ';
+                $this->script .= "\n" . '<script src="http://code.highcharts.com/highcharts.js"></script> ';
                 break;
             case 'highchart':
                 $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
