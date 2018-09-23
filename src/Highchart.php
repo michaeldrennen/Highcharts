@@ -8,11 +8,11 @@ namespace MichaelDrennen\Highcharts;
  * @package MichaelDrennen\Highcharts
  *
  *          Most recent files for Highcharts
-http://code.highcharts.com/highcharts.js
-http://code.highcharts.com/highcharts-more.js
-http://code.highcharts.com/modules/exporting.js
-http://code.highcharts.com/adapters/mootools-adapter.js
-http://code.highcharts.com/adapters/prototype-adapter.js
+ * http://code.highcharts.com/highcharts.js
+ * http://code.highcharts.com/highcharts-more.js
+ * http://code.highcharts.com/modules/exporting.js
+ * http://code.highcharts.com/adapters/mootools-adapter.js
+ * http://code.highcharts.com/adapters/prototype-adapter.js
  */
 class Highchart {
 
@@ -91,7 +91,16 @@ class Highchart {
             $this->setScripts();
             self::$scriptLoaded = TRUE;
         endif;
-        $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options,                                                                                                                                      JSON_UNESCAPED_SLASHES ) . ");</script>";
+
+        if ( 'highstock' == $this->type ):
+            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
+                                                                                                                                                        JSON_UNESCAPED_SLASHES ) . ");</script>";
+        else:
+            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
+                                                                                                                                                        JSON_UNESCAPED_SLASHES ) . ");</script>";
+        endif;
+
+
         return $this->script;
     }
 
