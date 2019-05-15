@@ -18,7 +18,8 @@ class Highchart {
 
     protected $id = '';
 
-    protected $options = [];
+    protected $options    = [];
+    protected $properties = [];
     //protected $title    = '';
     //protected $subTitle = '';
 
@@ -35,10 +36,10 @@ class Highchart {
     /**
      * Highchart constructor.
      * @param string $type
-     * @param int    $height
+     * @param int $height
      * @param string $width
      */
-    protected function __construct( string $type = 'highstock', $height = 400, $width = '100%' ) {
+    protected function __construct( string $type = 'highstock', int $height = 400, string $width = '100%' ) {
         $this->type   = $type;
         $this->height = $height;
         $this->width  = $width;
@@ -47,7 +48,7 @@ class Highchart {
 
     /**
      * @param string $type
-     * @param int    $height
+     * @param int $height
      * @param string $width
      * @return \MichaelDrennen\Highcharts\Highchart
      */
@@ -56,11 +57,23 @@ class Highchart {
     }
 
     /**
+     * Highcharts.setOptions
+     * This method accepts an array of options to be passed to the setOptions() method of Highcharts before any of your charts are generated.
+     * @see https://api.highcharts.com/highcharts/
      * @param array $options
      * @return $this
      */
     public function options( array $options ) {
         $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * @param array $properties
+     * @return $this
+     */
+    public function properties( array $properties ) {
+        $this->properties = $properties;
         return $this;
     }
 
@@ -97,11 +110,15 @@ class Highchart {
             self::$scriptLoaded = TRUE;
         endif;
 
+        if( $this->options ):
+            $this->script .= "<script>Highcharts.setOptions(" . json_encode( $this->options,JSON_UNESCAPED_SLASHES ) . ");</script>";
+        endif;
+
         if ( 'highstock' == $this->type ):
-            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
+            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
                                                                                                                                                         JSON_UNESCAPED_SLASHES ) . ");</script>";
         else:
-            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->options,
+            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
                                                                                                                                                    JSON_UNESCAPED_SLASHES ) . ");</script>";
         endif;
 
