@@ -99,7 +99,7 @@ class Highchart {
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/annotations.js"></script> ';
-        $this->script .= "\n" . '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>';
+        $this->script .= "\n" . '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>';
     }
 
 
