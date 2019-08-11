@@ -7,7 +7,7 @@ namespace MichaelDrennen\Highcharts;
  * Class Highchart
  * @package MichaelDrennen\Highcharts
  *
- *          Most recent files for Highcharts
+ * Most recent files for Highcharts
  * http://code.highcharts.com/highcharts.js
  * http://code.highcharts.com/highcharts-more.js
  * http://code.highcharts.com/modules/exporting.js
@@ -16,16 +16,40 @@ namespace MichaelDrennen\Highcharts;
  */
 class Highchart {
 
+    /**
+     * @var int A pseudo-random number returned by mt_rand to serve as an identifier for a chart on a page.
+     */
     protected $id = '';
 
+    /**
+     * @see https://api.highcharts.com/highcharts/
+     * @var array Options for the chart
+     */
     protected $options    = [];
-    protected $properties = [];
-    //protected $title    = '';
-    //protected $subTitle = '';
 
+    /**
+     * @var array
+     */
+    protected $properties = [];
+
+    /**
+     * @var string What type of chart do you want to display?
+     */
     protected $type   = 'highstock'; // highstock, highchart
+
+    /**
+     * @var int How tall (in pixels) do you want the container? Set in the constructor.
+     */
     protected $height = 400;
+
+    /**
+     * @var string How wide do you want the container? Set in the constructor.
+     */
     protected $width  = '100%';
+
+    /**
+     * @var string The javascript that will be included on the page displaying the chart.
+     */
     protected $script = '';
 
     /**
@@ -115,10 +139,10 @@ class Highchart {
         endif;
 
         if ( 'highstock' == $this->type ):
-            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
+            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
                                                                                                                                                         JSON_UNESCAPED_SLASHES ) . ");</script>";
         else:
-            $this->script .= "<script>var highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
+            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
                                                                                                                                                    JSON_UNESCAPED_SLASHES ) . ");</script>";
         endif;
 
@@ -126,12 +150,19 @@ class Highchart {
         return $this->script;
     }
 
+    /**
+     * Sets the id of the chart to some psuedo-random number. You can have more than one chart per page.
+     */
     protected function setIdOfChart() {
         $this->id = mt_rand();
     }
 
+
+    /**
+     * @return string Call this where you want your chart container displayed.
+     */
     public function chart(): string {
-        $chart = '<div id="highchart_container_' . $this->id . '" style="width:' . $this->width . '; height:' . $this->width . 'px;"></div>';
+        $chart = '<div id="highchart_container_' . $this->id . '" style="width:' . $this->width . '; height:' . $this->height . 'px;"></div>';
 
         return $chart;
     }
