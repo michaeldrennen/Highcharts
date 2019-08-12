@@ -22,20 +22,19 @@ class Highchart {
     protected $id = '';
 
     /**
-     * @see https://api.highcharts.com/highcharts/
      * @var array Options for the chart
      */
-    protected $options    = [];
+    protected $globalOptions = [];
 
     /**
      * @var array
      */
-    protected $properties = [];
+    protected $localOptions = [];
 
     /**
      * @var string What type of chart do you want to display?
      */
-    protected $type   = 'highstock'; // highstock, highchart
+    protected $type = 'highstock'; // Either 'highstock' or 'highchart'
 
     /**
      * @var int How tall (in pixels) do you want the container? Set in the constructor.
@@ -45,7 +44,7 @@ class Highchart {
     /**
      * @var string How wide do you want the container? Set in the constructor.
      */
-    protected $width  = '100%';
+    protected $width = '100%';
 
     /**
      * @var string The javascript that will be included on the page displaying the chart.
@@ -75,8 +74,15 @@ class Highchart {
      * @param int $height
      * @param string $width
      * @return \MichaelDrennen\Highcharts\Highchart
+     * @throws \Exception
      */
     public static function make( string $type = 'highstock', $height = 400, $width = '100%' ) {
+
+        $validChartType = [ 'highstock', 'highchart' ];
+        if ( FALSE === in_array( $type, $validChartType ) ):
+            throw new \Exception( "You tried to set the type of this chart to something that isn't supported." );
+        endif;
+
         return new Highchart( $type, $height, $width );
     }
 
@@ -84,20 +90,20 @@ class Highchart {
      * Highcharts.setOptions
      * This method accepts an array of options to be passed to the setOptions() method of Highcharts before any of your charts are generated.
      * @see https://api.highcharts.com/highcharts/
-     * @param array $options
+     * @param array $globalOptions
      * @return $this
      */
-    public function options( array $options ) {
-        $this->options = $options;
+    public function setGlobalOptions( array $globalOptions ) {
+        $this->globalOptions = $globalOptions;
         return $this;
     }
 
     /**
-     * @param array $properties
+     * @param array $localOptions
      * @return $this
      */
-    public function properties( array $properties ) {
-        $this->properties = $properties;
+    public function setLocalOptions( array $localOptions ) {
+        $this->localOptions = $localOptions;
         return $this;
     }
 
@@ -108,22 +114,27 @@ class Highchart {
      */
     protected function setScripts() {
         $this->script = '';
-//        switch ( $this->type ):
-//            case 'highstock':
-//                $this->script .= "\n" . '<script src="http://code.highcharts.com/highcharts.js"></script> ';
-//                break;
-//            case 'highchart':
-//                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
-//                break;
-//            default:
-//                throw new \Exception( "You tried to set the type of this chart to something that isn't supported." );
-//        endswitch;
-        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+        switch ( $this->type ):
+            case 'highstock':
+                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+                break;
+            case 'highchart':
+                $this->script .= "\n" . '<script src="http://code.highcharts.com/highcharts.js"></script> ';
+                break;
+        endswitch;
+        //$this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highcharts-more.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/annotations.js"></script> ';
         $this->script .= "\n" . '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>';
+    }
+
+    /**
+     * Sets the id of the chart to some psuedo-random number. You can have more than one chart per page.
+     */
+    protected function setIdOfChart() {
+        $this->id = mt_rand();
     }
 
 
@@ -134,27 +145,20 @@ class Highchart {
             self::$scriptLoaded = TRUE;
         endif;
 
-        if( $this->options ):
-            $this->script .= "<script>Highcharts.setOptions(" . json_encode( $this->options,JSON_UNESCAPED_SLASHES ) . ");</script>";
+        if ( $this->globalOptions ):
+            $this->script .= "<script>Highcharts.setOptions(" . json_encode( $this->globalOptions, JSON_UNESCAPED_SLASHES ) . ");</script>";
         endif;
 
-        if ( 'highstock' == $this->type ):
-            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
+        if ( 'highstock' === $this->type ):
+            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.stockChart('highchart_container_" . $this->id . "', " . json_encode( $this->localOptions,
                                                                                                                                                         JSON_UNESCAPED_SLASHES ) . ");</script>";
         else:
-            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->properties,
+            $this->script .= "<script>let highchart_" . $this->id . " = Highcharts.chart('highchart_container_" . $this->id . "', " . json_encode( $this->localOptions,
                                                                                                                                                    JSON_UNESCAPED_SLASHES ) . ");</script>";
         endif;
 
 
         return $this->script;
-    }
-
-    /**
-     * Sets the id of the chart to some psuedo-random number. You can have more than one chart per page.
-     */
-    protected function setIdOfChart() {
-        $this->id = mt_rand();
     }
 
 
