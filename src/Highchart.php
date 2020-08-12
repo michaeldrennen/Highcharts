@@ -167,7 +167,6 @@ class Highchart {
      */
     public function chart(): string {
         $chart = '<div id="highchart_container_' . $this->id . '" style="width:' . $this->width . '; height:' . $this->height . 'px;"></div>';
-
         return $chart;
     }
 }
