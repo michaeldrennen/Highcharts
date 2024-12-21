@@ -34,3 +34,44 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
                   ->setGlobalOptions($globalOptions)
                   ->setLocalOptions( $localOptions );
 ```
+
+## Sample localOptions
+```php
+
+[
+            'title'         => [ 'text' => "This is the Title of the Graph" ],
+            'subtitle'      => [ 'text' => "This is the subtitle of the graph" ],
+            'chart'         => [
+                'type' => 'column',
+            ],
+            'navigator'     => [
+                'enabled' => FALSE,
+            ],
+            'scrollbar'     => [
+                'enabled' => FALSE,
+            ],
+            'rangeSelector' => [
+                'enabled' => FALSE,
+            ],
+            'legend'        => FALSE,
+            'xAxis'         => [ [
+                                     'categories' => $this->categories(),
+                                 ],
+            ],
+            'yAxis'         => [ [
+                                     'min'           => 0,
+                                     'allowDecimals' => FALSE,
+                                     'title'         => [ 'text' => "Total Transactions Checked" ],
+                                     'stackLabels'   => [
+                                         'enabled' => TRUE,
+                                         'style'   => [
+                                             'fontWeight' => 'bold',
+                                             'color'      => "(Highcharts.theme && Highcharts.theme.textColor) || 'gray'",
+                                         ],
+                                     ],
+
+                                 ],
+            ],
+            'series'        => $this->series(),
+        ];
+```
