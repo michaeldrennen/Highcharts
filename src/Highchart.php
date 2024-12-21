@@ -93,7 +93,7 @@ class Highchart {
      * @param array $globalOptions
      * @return $this
      */
-    public function setGlobalOptions( array $globalOptions ) {
+    public function setGlobalOptions( array $globalOptions ): Highchart {
         $this->globalOptions = $globalOptions;
         return $this;
     }
@@ -102,9 +102,19 @@ class Highchart {
      * @param array $localOptions
      * @return $this
      */
-    public function setLocalOptions( array $localOptions ) {
+    public function setLocalOptions( array $localOptions ): Highchart {
         $this->localOptions = $localOptions;
         return $this;
+    }
+
+
+    public function setTitle(string $title): Highchart {
+        $this->localOptions['title'] = $title;
+        return $this;
+    }
+
+    public function setSubtitle(string $subtitle): Highchart {
+        $this->localOptions['subtitle'] = $subtitle;
     }
 
     /**
