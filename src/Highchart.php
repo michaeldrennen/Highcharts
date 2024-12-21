@@ -122,10 +122,12 @@ class Highchart {
 
     public function setSubtitle( string $subtitle ): Highchart {
         $this->localOptions[ 'subtitle' ] = $subtitle;
+        return $this;
     }
 
     public function setXAxisValues( array $xAxisValues ): Highchart {
         $this->localOptions[ 'xAxis' ][ 0 ][ 'categories' ] = $xAxisValues;
+        return $this;
     }
 
 
