@@ -5,6 +5,7 @@ namespace MichaelDrennen\Highcharts;
 
 /**
  * Class Highchart
+ *
  * @package MichaelDrennen\Highcharts
  *
  * Most recent files for Highcharts
@@ -58,8 +59,9 @@ class Highchart {
 
     /**
      * Highchart constructor.
+     *
      * @param string $type
-     * @param int $height
+     * @param int    $height
      * @param string $width
      */
     protected function __construct( string $type = 'highstock', int $height = 400, string $width = '100%' ) {
@@ -71,8 +73,9 @@ class Highchart {
 
     /**
      * @param string $type
-     * @param int $height
+     * @param int    $height
      * @param string $width
+     *
      * @return \MichaelDrennen\Highcharts\Highchart
      * @throws \Exception
      */
@@ -89,8 +92,11 @@ class Highchart {
     /**
      * Highcharts.setOptions
      * This method accepts an array of options to be passed to the setOptions() method of Highcharts before any of your charts are generated.
+     *
      * @see https://api.highcharts.com/highcharts/
+     *
      * @param array $globalOptions
+     *
      * @return $this
      */
     public function setGlobalOptions( array $globalOptions ): Highchart {
@@ -100,6 +106,7 @@ class Highchart {
 
     /**
      * @param array $localOptions
+     *
      * @return $this
      */
     public function setLocalOptions( array $localOptions ): Highchart {
@@ -108,18 +115,104 @@ class Highchart {
     }
 
 
-    public function setTitle(string $title): Highchart {
-        $this->localOptions['title'] = $title;
+    public function setTitle( string $title ): Highchart {
+        $this->localOptions[ 'title' ] = $title;
         return $this;
     }
 
-    public function setSubtitle(string $subtitle): Highchart {
-        $this->localOptions['subtitle'] = $subtitle;
+    public function setSubtitle( string $subtitle ): Highchart {
+        $this->localOptions[ 'subtitle' ] = $subtitle;
     }
+
+    public function setXAxisValues( array $xAxisValues ): Highchart {
+        $this->localOptions[ 'xAxis' ][ 0 ][ 'categories' ] = $xAxisValues;
+    }
+
+
+    /**
+     * @param array  $xAxisValues An array of values/tic-marks for the x-axis. See below
+     * @param array  $lines       Each element is its own line, with 'name' and 'data' elements. See below
+     * @param string $title
+     * @param string $subTitle
+     * @param int    $height
+     * @param string $width
+     * @param string $yAxisLabel
+     *
+     *
+     *  $xAxisValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
+     *
+     *  $lines = [
+     *       [
+     *           'name' => 'Installation & Developers',
+     *           'data' => [
+     *                   43934, 48656, 65165, 81827, 112143, 142383,
+     *                   171533, 165174, 155157, 161454, 154610, 168960,
+     *           ],
+     *       ],
+     *       [
+     *           'name' => 'Manufacturing',
+     *           'data' => [
+     *               24916, 37941, 29742, 29851, 32490, 30282,
+     *               38121, 36885, 33726, 34243, 31050, 33099,
+     *           ],
+     *       ]
+     *  ];
+     *
+     * @return \MichaelDrennen\Highcharts\Highchart
+     * @throws \Exception
+     */
+    public static function simpleLine( array  $xAxisValues = [],
+                                       array  $lines = [],
+                                       string $title = '',
+                                       string $subTitle = '',
+                                       int    $height = 400,
+                                       string $width = '100%',
+                                       string $yAxisLabel = '' ): Highchart {
+
+        $localOptions = [
+            'title'         => [ 'text' => $title ],
+            'subtitle'      => [ 'text' => $subTitle ],
+            'chart'         => [
+                'type' => 'line',
+            ],
+            'navigator'     => [
+                'enabled' => FALSE,
+            ],
+            'scrollbar'     => [
+                'enabled' => FALSE,
+            ],
+            'rangeSelector' => [
+                'enabled' => FALSE,
+            ],
+            'legend'        => FALSE,
+            'xAxis'         => [ [
+                                     'categories' => $xAxisValues,
+                                 ],
+            ],
+            'yAxis'         => [ [
+                                     'min'           => 0,
+                                     'allowDecimals' => FALSE,
+                                     'title'         => [ 'text' => $yAxisLabel ],
+                                     'stackLabels'   => [
+                                         'enabled' => TRUE,
+                                         'style'   => [
+                                             'fontWeight' => 'bold',
+                                             'color'      => "(Highcharts.theme && Highcharts.theme.textColor) || 'gray'",
+                                         ],
+                                     ],
+
+                                 ],
+            ],
+            'series'        => $lines,
+        ];
+        return self::make( 'highchart', $height, $width )->setLocalOptions( $localOptions );
+    }
+
 
     /**
      * Only load the scripts that you need.
      * TODO Add logic to selectively load the more/panes/exporting scripts if they're not needed.
+     *
      * @throws \Exception
      */
     protected function setScripts() {
