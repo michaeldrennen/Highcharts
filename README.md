@@ -35,6 +35,21 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
                   ->setLocalOptions( $localOptions );
 ```
 
+```html
+
+<html>
+    <script>
+        <?php echo $chart->script(); ?>
+    </script>
+    
+    <body>
+        <?php echo $chart->chart(); ?>
+    </body>
+
+</html>
+
+```
+
 ## Sample localOptions
 ```php
 
@@ -107,7 +122,7 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
         ];
 ```
 
-##Usage of Highchart::simpleLine()
+## Usage of Highchart::simpleLine()
 
 ```php 
 
