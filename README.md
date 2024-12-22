@@ -106,3 +106,28 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
                 ],
         ];
 ```
+
+##Usage of Highchart::simpleLine()
+
+```php 
+
+$chart = Highchart::simpleLine();
+
+
+
+```
+
+```html
+
+<html>
+    <script>
+        <?php echo $chart->script(); ?>
+    </script>
+    
+    <body>
+        <?php echo $chart->chart(); ?>
+    </body>
+
+</html>
+
+```
