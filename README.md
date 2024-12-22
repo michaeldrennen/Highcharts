@@ -5,6 +5,52 @@ A PHP library that helps produce Highcharts graphs.
 
 This library is functional, but needs some work before I release a v1.0
 
+## Usage of Highchart::simpleLine()
+
+```php 
+
+$xAxisValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+$lines = [
+            [
+                    'name' => 'Installation & Developers',
+                    'data' => [
+                        43934, 48656, 65165, 81827, 112143, 142383,
+                        171533, 165174, 155157, 161454, 154610, 168960,
+                    ],
+                ],
+                [
+                    'name' => 'Manufacturing',
+                    'data' => [
+                        24916, 37941, 29742, 29851, 32490, 30282,
+                        38121, 36885, 33726, 34243, 31050, 33099,
+                    ],
+            ]
+        ];
+$title = "Very Important Chart";
+$subTitle = "...seriously, it's important";
+$height = 500;
+$width = '100%';
+$yAxisLable = "Centimeters";
+
+$chart = Highchart::simpleLine( $xAxisValues, $lines, $title, $subtitle, $height, $width, $yAxisLabel);
+
+```
+
+```html
+
+<html>
+    <script>
+        <?php echo $chart->script(); ?>
+    </script>
+    
+    <body>
+        <?php echo $chart->chart(); ?>
+    </body>
+
+</html>
+
+```
+
 ## Breaking Change - 2019-05-15
 The latest release includes a breaking change to the library that now allows users to include "global" Highcharts options.
 
@@ -122,48 +168,3 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
         ];
 ```
 
-## Usage of Highchart::simpleLine()
-
-```php 
-
-$xAxisValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-$lines = [
-            [
-                    'name' => 'Installation & Developers',
-                    'data' => [
-                        43934, 48656, 65165, 81827, 112143, 142383,
-                        171533, 165174, 155157, 161454, 154610, 168960,
-                    ],
-                ],
-                [
-                    'name' => 'Manufacturing',
-                    'data' => [
-                        24916, 37941, 29742, 29851, 32490, 30282,
-                        38121, 36885, 33726, 34243, 31050, 33099,
-                    ],
-            ]
-        ];
-$title = "Very Important Chart";
-$subTitle = "...seriously, it's important";
-$height = 500;
-$width = '100%';
-$yAxisLable = "Centimeters";
-
-$chart = Highchart::simpleLine( $xAxisValues, $lines, $title, $subtitle, $height, $width, $yAxisLabel);
-
-```
-
-```html
-
-<html>
-    <script>
-        <?php echo $chart->script(); ?>
-    </script>
-    
-    <body>
-        <?php echo $chart->chart(); ?>
-    </body>
-
-</html>
-
-```
