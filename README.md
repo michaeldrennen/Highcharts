@@ -126,9 +126,30 @@ $chart = Highchart::make( 'highstock', 400, '100%' )
 
 ```php 
 
-$chart = Highchart::simpleLine();
+$xAxisValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+$lines = [
+            [
+                    'name' => 'Installation & Developers',
+                    'data' => [
+                        43934, 48656, 65165, 81827, 112143, 142383,
+                        171533, 165174, 155157, 161454, 154610, 168960,
+                    ],
+                ],
+                [
+                    'name' => 'Manufacturing',
+                    'data' => [
+                        24916, 37941, 29742, 29851, 32490, 30282,
+                        38121, 36885, 33726, 34243, 31050, 33099,
+                    ],
+            ]
+        ];
+$title = "Very Important Chart";
+$subTitle = "...seriously, it's important";
+$height = 500;
+$width = '100%';
+$yAxisLable = "Centimeters";
 
-
+$chart = Highchart::simpleLine( $xAxisValues, $lines, $title, $subtitle, $height, $width, $yAxisLabel);
 
 ```
 
