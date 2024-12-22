@@ -17,6 +17,9 @@ namespace MichaelDrennen\Highcharts;
  */
 class Highchart {
 
+    const DEFAULT_HEIGHT = 400;
+    const DEFAULT_WIDTH  = "100%";
+
     /**
      * @var int A pseudo-random number returned by mt_rand to serve as an identifier for a chart on a page.
      */
@@ -40,12 +43,12 @@ class Highchart {
     /**
      * @var int How tall (in pixels) do you want the container? Set in the constructor.
      */
-    protected $height = 400;
+    protected $height = self::DEFAULT_HEIGHT;
 
     /**
      * @var string How wide do you want the container? Set in the constructor.
      */
-    protected $width = '100%';
+    protected $width = self::DEFAULT_WIDTH;
 
     /**
      * @var string The javascript that will be included on the page displaying the chart.
@@ -79,7 +82,9 @@ class Highchart {
      * @return \MichaelDrennen\Highcharts\Highchart
      * @throws \Exception
      */
-    public static function make( string $type = 'highstock', $height = 400, $width = '100%' ) {
+    public static function make( string $type = 'highstock',
+                                 int    $height = self::DEFAULT_HEIGHT,
+                                 string $width = self::DEFAULT_WIDTH ): Highchart {
 
         $validChartType = [ 'highstock', 'highchart' ];
         if ( FALSE === in_array( $type, $validChartType ) ):
@@ -171,42 +176,23 @@ class Highchart {
                                        string $width = '100%',
                                        string $yAxisLabel = '' ): Highchart {
 
-        $localOptions = [
-            'title'         => [ 'text' => $title ],
-            'subtitle'      => [ 'text' => $subTitle ],
-            'chart'         => [
-                'type' => 'line',
-            ],
-            'navigator'     => [
-                'enabled' => FALSE,
-            ],
-            'scrollbar'     => [
-                'enabled' => FALSE,
-            ],
-            'rangeSelector' => [
-                'enabled' => FALSE,
-            ],
-            'legend'        => FALSE,
-            'xAxis'         => [ [
-                                     'categories' => $xAxisValues,
-                                 ],
-            ],
-            'yAxis'         => [ [
-                                     'min'           => 0,
-                                     'allowDecimals' => FALSE,
-                                     'title'         => [ 'text' => $yAxisLabel ],
-                                     'stackLabels'   => [
-                                         'enabled' => TRUE,
-                                         'style'   => [
-                                             'fontWeight' => 'bold',
-                                             'color'      => "(Highcharts.theme && Highcharts.theme.textColor) || 'gray'",
-                                         ],
-                                     ],
+        $localOptions = self::_getLocalOptions( 'line', $title, $subTitle, $xAxisValues, $lines, $yAxisLabel );
+        return self::make( 'highchart', $height, $width )->setLocalOptions( $localOptions );
+    }
 
-                                 ],
-            ],
-            'series'        => $lines,
-        ];
+
+    /**
+     * @throws \Exception
+     */
+    public static function simpleColumn( array  $xAxisValues = [],
+                                         array  $dataSeries = [],
+                                         string $title = '',
+                                         string $subTitle = '',
+                                         int    $height = 400,
+                                         string $width = '100%',
+                                         string $yAxisLabel = '' ): Highchart {
+
+        $localOptions = self::_getLocalOptions( 'column', $title, $subTitle, $xAxisValues, $dataSeries, $yAxisLabel );
         return self::make( 'highchart', $height, $width )->setLocalOptions( $localOptions );
     }
 
@@ -273,5 +259,60 @@ class Highchart {
     public function chart(): string {
         $chart = '<div id="highchart_container_' . $this->id . '" style="width:' . $this->width . '; height:' . $this->height . 'px;"></div>';
         return $chart;
+    }
+
+
+    /**
+     * @param string      $chartType
+     * @param string|NULL $title
+     * @param string|NULL $subTitle
+     * @param array       $xAxisValues
+     * @param array       $dataSeries
+     * @param string|NULL $yAxisLabel
+     *
+     * @return array
+     */
+    protected static function _getLocalOptions( string $chartType,
+                                                string $title = NULL,
+                                                string $subTitle = NULL,
+                                                array  $xAxisValues = [],
+                                                array  $dataSeries = [],
+                                                string $yAxisLabel = NULL ): array {
+        return [
+            'title'         => [ 'text' => $title ],
+            'subtitle'      => [ 'text' => $subTitle ],
+            'chart'         => [
+                'type' => $chartType,
+            ],
+            'navigator'     => [
+                'enabled' => FALSE,
+            ],
+            'scrollbar'     => [
+                'enabled' => FALSE,
+            ],
+            'rangeSelector' => [
+                'enabled' => FALSE,
+            ],
+            'legend'        => FALSE,
+            'xAxis'         => [ [
+                                     'categories' => $xAxisValues,
+                                 ],
+            ],
+            'yAxis'         => [ [
+                                     'min'           => 0,
+                                     'allowDecimals' => FALSE,
+                                     'title'         => [ 'text' => $yAxisLabel ],
+                                     'stackLabels'   => [
+                                         'enabled' => TRUE,
+                                         'style'   => [
+                                             'fontWeight' => 'bold',
+                                             'color'      => "(Highcharts.theme && Highcharts.theme.textColor) || 'gray'",
+                                         ],
+                                     ],
+
+                                 ],
+            ],
+            'series'        => $dataSeries,
+        ];
     }
 }
