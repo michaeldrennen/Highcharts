@@ -201,7 +201,15 @@ class Highchart {
                                         string $width = '100%',
                                         string $yAxisLabel = '' ) {
 
-        $localOptions = self::_getLocalOptions( null, $title, $subTitle, [], $dohlcs, null );
+        $localOptions = self::_getLocalOptions( null,
+                                                $title,
+                                                $subTitle,
+                                                [],
+                                                $dohlcs,
+                                                $yAxisLabel );
+
+
+
         return self::make( 'highstock', $height, $width )->setLocalOptions( $localOptions );
 
     }
