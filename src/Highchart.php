@@ -182,6 +182,32 @@ class Highchart {
 
 
     /**
+     * @param array  $dohlcs  Each row is [timestamp, open, high, low, close]
+     * @param array  $volumes Each row is [timestamp, intVolume]
+     * @param string $title
+     * @param string $subTitle
+     * @param int    $height
+     * @param string $width
+     * @param string $yAxisLabel
+     *
+     * @return \MichaelDrennen\Highcharts\Highchart
+     * @throws \Exception
+     */
+    public static function simpleStock( array  $dohlcs = [],
+                                        array  $volumes = [],
+                                        string $title = '',
+                                        string $subTitle = '',
+                                        int    $height = 400,
+                                        string $width = '100%',
+                                        string $yAxisLabel = '' ) {
+
+        $localOptions = self::_getLocalOptions( null, $title, $subTitle, [], $dohlcs, null );
+        return self::make( 'highstock', $height, $width )->setLocalOptions( $localOptions );
+
+    }
+
+
+    /**
      * @throws \Exception
      */
     public static function simpleColumn( array  $xAxisValues = [],
