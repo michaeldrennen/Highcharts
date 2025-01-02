@@ -193,21 +193,22 @@ class Highchart {
      * @return \MichaelDrennen\Highcharts\Highchart
      * @throws \Exception
      */
-    public static function simpleStock( array  $dohlcs = [],
-                                        array  $volumes = [],
-                                        string $title = '',
-                                        string $subTitle = '',
-                                        int    $height = 400,
-                                        string $width = '100%',
-                                        string $yAxisLabel = '' ) {
+    public static function simpleStock(
+        string $ticker,
+        array  $dohlcs = [],
+        array  $volumes = [],
+        string $title = '',
+        string $subTitle = '',
+        int    $height = 400,
+        string $width = '100%' ) {
 
-        $localOptions = self::_getLocalOptions( null,
-                                                $title,
-                                                $subTitle,
-                                                [],
-                                                $dohlcs,
-                                                $yAxisLabel );
 
+        $localOptions = self::_getOptionsForStockChart( $ticker,
+                                                        $dohlcs,
+                                                        $volumes,
+                                                        $title,
+                                                        $subTitle,
+                                                        $height );
 
 
         return self::make( 'highstock', $height, $width )->setLocalOptions( $localOptions );
@@ -239,20 +240,31 @@ class Highchart {
      */
     protected function setScripts() {
         $this->script = '';
-        switch ( $this->type ):
-            case 'highstock':
-                $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
-                break;
-            case 'highchart':
-                $this->script .= "\n" . '<script src="https://code.highcharts.com/highcharts.js"></script> ';
-                break;
-        endswitch;
-        //$this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+        //switch ( $this->type ):
+        //    //case 'highstock':
+        //    //    $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+        //    //    break;
+        //    //case 'highchart':
+        //    //    $this->script .= "\n" . '<script src="https://code.highcharts.com/highcharts.js"></script> ';
+        //    //    break;
+        //    default:
+        //        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
+        //        break;
+        //endswitch;
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highstock.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/highcharts-more.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drag-panes.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/exporting.js"></script> ';
         $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/annotations.js"></script> ';
         $this->script .= "\n" . '<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>';
+
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/drilldown.js"></script>';
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/solid-gauge.js"></script>';
+
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/indicators/indicators-all.js"></script>';
+        $this->script .= "\n" . '<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>';
+
+
     }
 
     /**
@@ -347,6 +359,68 @@ class Highchart {
                                  ],
             ],
             'series'        => $dataSeries,
+        ];
+    }
+
+
+    protected static function _getOptionsForStockChart(
+        string $ticker,
+        array  $dohlcs = [],
+        array  $volumes = [],
+        string $title = NULL,
+        string $subTitle = NULL,
+        int    $height = 400 ): array {
+
+        $id   = strtolower( $ticker );
+        $name = strtoupper( $ticker );
+
+        return [
+            'chart'         => [
+                'height' => $height,
+            ],
+            'title'         => [ 'text' => $title ],
+            'subtitle'      => [ 'text' => $subTitle ],
+            'legend'        => [
+                'enabled' => TRUE,
+            ],
+            'rangeSelector' => [
+                'selected' => 2,
+            ],
+            'yAxis'         => [ [
+                                     'height' => '60%',
+                                 ],
+                                 [
+                                     'top'    => '60%',
+                                     'height' => '20%',
+                                 ],
+            ],
+            'series'        => [
+                [
+                    'type' => 'candlestick',
+                    'id'   => $id,
+                    'name' => $name,
+                    'data' => $dohlcs,
+                ],
+                [
+                    'type'  => 'column',
+                    'id'    => 'volume',
+                    'name'  => 'Volume',
+                    'data'  => $volumes,
+                    'yAxis' => 1,
+                ],
+                [
+                    'type'     => 'pc',
+                    'id'       => 'overlay',
+                    'linkedTo' => $id,
+                    'yAxis'    => 0,
+                ],
+                [
+                    'type'     => 'macd',
+                    'id'       => 'oscillator',
+                    'linkedTo' => $id,
+                    'yAxis'    => 1,
+                ],
+            ],
         ];
     }
 }
